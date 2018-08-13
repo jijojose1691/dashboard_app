@@ -3,11 +3,11 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import * as contentful from 'contentful'
 import Course from '../components/Course'
-const SPACE_ID = '[INSERT CONTENTFUL SPACE ID]'
-const ACCESS_TOKEN = '[INSERT CONTENTFUL ACCESS TOKEN]'
+const SPACE_ID = 'regy90wbvla9'
+const ACCESS_TOKEN = 'f282358edc6a1760dd8ecf3151e32a57729b0c5eb18f2c85858fe54c3c72f3d3'
 const client = contentful.createClient({
-    space: 'regy90wbvla9',
-    accessToken: '8c9bdd0d4054879e09909f1d5c1c6aed26180e599e7fbc623a812c1af5c52f27'
+    space: SPACE_ID,
+    accessToken: ACCESS_TOKEN
 })
 class CoursesList extends Component {
     state = {
