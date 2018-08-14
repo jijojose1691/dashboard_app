@@ -5,6 +5,7 @@ import './App.css';
 import {createStore} from 'redux'
 import HelloWorld from './containers/HelloWorld.js'
 import NavBar from './components/NavBar'
+import RackTable from './components/RackTable'
 import combReducer from './reducers/reducer.js'
 import CoursesList from './components/CoursesList'
 
@@ -15,7 +16,7 @@ class App extends Component {
      return (
        <div>
          <NavBar />
-         <CoursesList />
+         <RackTable />
        </div>
      )
    }

@@ -1,3 +1,5 @@
 export const PLUS = 'PLUS'
 export const MINUS = 'MINUS'
 export const RESET = 'RESET'
+export const ARRIS = 'Arris'
+export const HUMAX = 'Humax'
