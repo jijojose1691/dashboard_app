@@ -18,6 +18,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { ARRIS, HUMAX } from './../constants/constants.js'
+import {getRack} from '../actions/action.js'
+import {getRackStatus} from '../actions/action.js'
+import {connect} from 'react-redux'
 
 const styles = theme => ({
   root: {
@@ -55,23 +58,32 @@ class RackTable extends React.Component {z
   state = {
     open: false,
     age: '',
-    platform:'Arris'
+    platform:'Arris',
+    rackname:''
+  };
+
+  componentWillMount(){
+    this.props.getRack(this.props.platform)
+    this.props.getRackStatus(this.props.platform, this.props.rackname)
+  }
+
+  handleChange = name => event => {
+    this.setState({ [name]: event.target.value });
+    this.props.getRack(this.props.platform);
   };
 
   handleChange = name => event => {
     this.setState({ [name]: event.target.value });
+        this.props.getRackStatus(this.props.platform, this.props.rackname)
   };
-
-  // handleClickOpen = () => {
-  //   this.setState({ open: true });
-  // };
-  //
-  // handleClose = () => {
-  //   this.setState({ open: false });
-  // };
 
   render() {
     const { classes } = this.props;
+
+    console.log(this.props.racks)
+    let rackItems = this.props.rackNames.map((rack) =>
+        <option key={rack}>{rack}</option>
+    );
 
     return (
       <div className={classes.root}>
@@ -93,22 +105,20 @@ class RackTable extends React.Component {z
           </FormControl>
 
           <FormControl className={classes.formControl}>
-                <InputLabel htmlFor="age-native-simple">Rack Name</InputLabel>
+                <InputLabel htmlFor="age-native-simple"></InputLabel>
                 <Select
                   native
-                  value={this.state.age}
-                  onChange={this.handleChange('age')}
+                  value={this.state.rackname}
+                  onChange={this.handleChange('rackname')}
                   inputProps={{
-                    name: 'age',
-                    id: 'age-native-simple',
+                    name: 'rackname',
+                    id: 'rackname',
                   }}
                 >
-                  <option value="" />
-                  <option value={10}>Ten</option>
-                  <option value={20}>Twenty</option>
-                  <option value={30}>Thirty</option>
+                {rackItems}
                 </Select>
               </FormControl>
+
 
       <Paper className={classes.root}>
         <Table className={classes.table}>
@@ -121,17 +131,18 @@ class RackTable extends React.Component {z
               <TableCell numeric>Protein (g)</TableCell>
             </TableRow>
           </TableHead>
+
           <TableBody>
-            {rows.map(row => {
+            { this.props.rackTable.map(rackState => {
               return (
-                <TableRow key={row.id}>
+                <TableRow key={1}>
                   <TableCell component="th" scope="row">
-                    {row.name}
+                    {rackState.box_model}
                   </TableCell>
-                  <TableCell numeric>{row.calories}</TableCell>
-                  <TableCell numeric>{row.fat}</TableCell>
-                  <TableCell numeric>{row.carbs}</TableCell>
-                  <TableCell numeric>{row.protein}</TableCell>
+                  <TableCell numeric>{rackState.cpe_id}</TableCell>
+                  <TableCell numeric>{rackState.cpe_id}</TableCell>
+                  <TableCell numeric>{rackState.cpe_id}</TableCell>
+                  <TableCell numeric>{rackState.cpe_id}</TableCell>
                 </TableRow>
               );
             })}
@@ -147,4 +158,9 @@ RackTable.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(RackTable);
+const mapStateToProps=state=>({
+  rackNames:state.helloWorldReducer.rackNames,
+  rackTable:state.helloWorldReducer.rackTable
+})
+
+export default withStyles(styles)(connect(mapStateToProps,{getRack, getRackStatus})(RackTable));
