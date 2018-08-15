@@ -1,46 +1,26 @@
 import * as request from 'superagent'
 import {baseUrl} from '../constants/constants.js'
-import { PLUS, MINUS, RESET } from './../constants/constants.js'
-export const GET_RACK='GET_RACK'
-export const GET_RACK_STATUS='GET_RACK_STATUS'
+export const GET_RACK_NAMES='GET_RACK_NAMES'
+export const GET_BOX_LIST='GET_BOX_LIST'
 
-export const increment = () => {
-  console.log('+ action created')
-  return {
-    type: PLUS,
-  }
-}
-export const decrement = () => {
-  console.log('- action created')
-  return {
-    type: MINUS,
-  }
-}
-export const reset = () => {
-  console.log('reset action created')
-  return {
-    type: RESET,
-  }
-}
-
-export const getRack=(platform)=>(dispatch)=>{
+export const getRackNames= (platform) => (dispatch) =>{
   request.get(`${baseUrl}/rackNames/${platform}`)
   .then(result=>{
     console.log('result',result.body)
     dispatch({
-      type:GET_RACK,
+      type:GET_RACK_NAMES,
       payload:result.body
     })
   })
 }
 
 
-export const getRackStatus=(platform, rackName)=>(dispatch)=>{
+export const getBoxList= (rackName) => (dispatch) =>{
   request.get(`${baseUrl}/racks`)
   .then(result=>{
     console.log('result',result.body)
     dispatch({
-      type:GET_RACK_STATUS,
+      type:GET_RACK_NAMES,
       payload:result.body
     })
   })

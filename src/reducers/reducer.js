@@ -1,26 +1,13 @@
-import { PLUS, MINUS, RESET } from './../constants/constants.js'
 import { combineReducers } from 'redux'
-import {GET_RACK,GET_RACK_STATUS} from '../actions/action'
+import {GET_RACK_NAMES,GET_BOX_LIST} from '../actions/action'
 
-const helloWorldReducer = (state={rackNames:[],rackTable:[]}, action) => {
+const rackListReducer = (state={rackNames:[],rackTable:[]}, action) => {
   switch(action.type){
 
-    case PLUS:
-      console.log('PLUS reducer')
-      return Object.assign({}, state, { message: state.message + 1 })
-
-    case MINUS:
-      console.log('MINUS reducer')
-      return Object.assign({}, state, { message: state.message - 1 })
-
-    case RESET:
-      console.log('RESET reducer')
-      return Object.assign({}, state, { message: 0 })
-
-    case GET_RACK:
+    case GET_RACK_NAMES:
       return Object.assign({}, state, {rackNames:action.payload})
 
-    case GET_RACK_STATUS:
+    case GET_BOX_LIST:
       return Object.assign({}, state, {rackTable:action.payload})
 
 
@@ -30,7 +17,7 @@ const helloWorldReducer = (state={rackNames:[],rackTable:[]}, action) => {
   }
 }
 const combReducer = combineReducers({
-  helloWorldReducer,
+  rackListReducer,
 })
 
 export default combReducer
