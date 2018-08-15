@@ -20,7 +20,7 @@ export const getBoxList= (rackName) => (dispatch) =>{
   .then(result=>{
     console.log('result',result.body)
     dispatch({
-      type:GET_RACK_NAMES,
+      type:GET_BOX_LIST,
       payload:result.body
     })
   })
