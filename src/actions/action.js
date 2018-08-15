@@ -24,7 +24,7 @@ export const reset = () => {
 }
 
 export const getRack=(platform)=>(dispatch)=>{
-  request.get(`${baseUrl}/racks`)
+  request.get(`${baseUrl}/rackNames/${platform}`)
   .then(result=>{
     console.log('result',result.body)
     dispatch({
@@ -36,7 +36,7 @@ export const getRack=(platform)=>(dispatch)=>{
 
 
 export const getRackStatus=(platform, rackName)=>(dispatch)=>{
-  request.get(`${baseUrl}/posts`)
+  request.get(`${baseUrl}/racks`)
   .then(result=>{
     console.log('result',result.body)
     dispatch({
