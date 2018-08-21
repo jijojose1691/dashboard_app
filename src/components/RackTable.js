@@ -36,18 +36,41 @@ const styles = theme => ({
 
 class RackTable extends React.Component {z
   state = {
-    platform:'Arris',
-    rackname:''
+    platform:'Arris'
   };
 
   componentWillMount(){
-    this.props.getRackNames(this.props.platform)
-    this.props.getBoxList(this.props.rackname)
+    this.props.getRackNames(this.state.platform)
+
+    if((this.props.rackNames!==undefined)&&(this.props.rackNames.length>0) ){
+      console.log('inside if')
+    this.props.getBoxList(this.props.rackNames[0])
+    }
+
   }
 
-  handleChange = name => event => {
-    this.setState({ [name]: event.target.value });
-    this.props.getRackNames(this.props.platform);
+
+  handlePlatformChange=name =>async event=> {
+       this.setState({ 'platform': event.target.value });
+      const rackNam=await this.props.getRackNames(event.target.value);
+       console.log("inide platformchange",rackNam);
+    //
+    //   if((this.props.rackNames!=undefined)&&(this.props.rackNames.length>0) ){
+    //     console.log('inside handlePlatformChange',this.props.rackNames[0])
+    //   this.props.getBoxList(this.props.rackNames[0])
+    // }
+      console.log('rackname',rackNam)
+  };
+
+
+  handleChange=name => event => {
+
+    // this.setState({ [name]: event.target.value });
+      console.log('rackname',event.target.value)
+
+    // this.props.getRackNames(event.target.value);
+    this.props.getBoxList(event.target.value)
+
   };
 
   // handleChange = name => event => {
@@ -58,10 +81,12 @@ class RackTable extends React.Component {z
   render() {
     const { classes } = this.props;
 
-    console.log(this.props.rackNames)
-    let rackItems = this.props.rackNames.map((rack) =>
-        <option key={rack}>{rack}</option>
-    );
+    // let rackItems = this.props.rackNames.map((rack) =>
+    // // {   console.log('rack',rack);
+    //     <option value={rack}>{rack}</option>
+    // );
+
+     console.log('rackItems',this.props.rackNames)
 
     return (
       <div className={classes.root}>
@@ -70,7 +95,7 @@ class RackTable extends React.Component {z
             <Select
               native
               value={this.state.platform}
-              onChange={this.handleChange('platform')}
+              onChange={this.handlePlatformChange('platform')}
               inputProps={{
                 name: 'platform',
                 id: 'platform',
@@ -83,17 +108,21 @@ class RackTable extends React.Component {z
           </FormControl>
 
           <FormControl className={classes.formControl}>
-                <InputLabel>Rack Name</InputLabel>
+
                 <Select
                   native
-                  value={this.state.rackname}
+
                   onChange={this.handleChange('rackname')}
                   inputProps={{
                     name: 'rackname',
                     id: 'rackname',
                   }}
                 >
-                {rackItems}
+                {(this.props.rackNames!==undefined)&&(this.props.rackNames.length>0)?
+                (this.props.rackNames.map((rack, index) => {
+                         return <option key={index} value={rack} defaultValue={this.props.rackNames[0]}>{rack}</option>
+                       })):(null)}
+
                 </Select>
               </FormControl>
 
@@ -112,8 +141,9 @@ class RackTable extends React.Component {z
 
           <TableBody>
             { this.props.rackTable.map(rackState => {
+
               return (
-                <TableRow key={1}>
+                <TableRow key={rackState.id}>
                   <TableCell component="th" scope="row">
                     {rackState.rack_slot}
                   </TableCell>
@@ -138,7 +168,7 @@ RackTable.propTypes = {
 
 const mapStateToProps=state=>({
   rackNames:state.rackListReducer.rackNames,
-  rackTable:state.rackListReducer.rackTable
+  rackTable:state.boxListReducer.rackTable
 })
 
 export default withStyles(styles)(connect(mapStateToProps,{getRackNames, getBoxList})(RackTable));

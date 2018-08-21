@@ -6,7 +6,7 @@ export const GET_BOX_LIST='GET_BOX_LIST'
 export const getRackNames= (platform) => (dispatch) =>{
   request.get(`${baseUrl}/rackNames/${platform}`)
   .then(result=>{
-    console.log('result',result.body)
+    console.log("reult",result.body)
     dispatch({
       type:GET_RACK_NAMES,
       payload:result.body
@@ -16,9 +16,9 @@ export const getRackNames= (platform) => (dispatch) =>{
 
 
 export const getBoxList= (rackName) => (dispatch) =>{
-  request.get(`${baseUrl}/racks`)
+   console.log('getboxlist',rackName)
+  request.get(`${baseUrl}/boxList/${rackName}`)
   .then(result=>{
-    console.log('result',result.body)
     dispatch({
       type:GET_BOX_LIST,
       payload:result.body
