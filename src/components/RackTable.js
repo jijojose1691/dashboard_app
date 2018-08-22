@@ -15,6 +15,7 @@ import {getRackNames} from '../actions/action.js'
 import {getBoxList} from '../actions/action.js'
 import {connect} from 'react-redux'
 
+
 const styles = theme => ({
   root: {
     width: '100%',
@@ -36,58 +37,35 @@ const styles = theme => ({
 
 class RackTable extends React.Component {z
   state = {
-    platform:'Arris'
+    platform:'Arris',
   };
 
   componentWillMount(){
     this.props.getRackNames(this.state.platform)
-
-    if((this.props.rackNames!==undefined)&&(this.props.rackNames.length>0) ){
-      console.log('inside if')
-    this.props.getBoxList(this.props.rackNames[0])
-    }
-
+    setTimeout(this.fetchBoxList,300)
   }
 
 
-  handlePlatformChange=name =>async event=> {
+  handlePlatformChange=name => event=> {
        this.setState({ 'platform': event.target.value });
-      const rackNam=await this.props.getRackNames(event.target.value);
-       console.log("inide platformchange",rackNam);
-    //
-    //   if((this.props.rackNames!=undefined)&&(this.props.rackNames.length>0) ){
-    //     console.log('inside handlePlatformChange',this.props.rackNames[0])
-    //   this.props.getBoxList(this.props.rackNames[0])
-    // }
-      console.log('rackname',rackNam)
+      this.props.getRackNames(event.target.value);
+      setTimeout(this.fetchBoxList,300)
   };
 
+  fetchBoxList=()=>{
+    console.log('racknamems inside abcfn',this.props.rackNames)
+    if((this.props.rackNames!==undefined)&&(this.props.rackNames.length>0) ){
+      this.props.getBoxList(this.props.rackNames[0])
+  }
+}
 
   handleChange=name => event => {
-
-    // this.setState({ [name]: event.target.value });
-      console.log('rackname',event.target.value)
-
-    // this.props.getRackNames(event.target.value);
     this.props.getBoxList(event.target.value)
-
   };
 
-  // handleChange = name => event => {
-  //   this.setState({ [name]: event.target.value });
-  //       this.props.getBoxList(this.props.platform, this.props.rackname)
-  // };
 
   render() {
     const { classes } = this.props;
-
-    // let rackItems = this.props.rackNames.map((rack) =>
-    // // {   console.log('rack',rack);
-    //     <option value={rack}>{rack}</option>
-    // );
-
-     console.log('rackItems',this.props.rackNames)
-
     return (
       <div className={classes.root}>
       <FormControl className={classes.formControl}>
@@ -131,19 +109,21 @@ class RackTable extends React.Component {z
         <Table className={classes.table}>
           <TableHead>
             <TableRow>
-              <TableCell numeric>Slot</TableCell>
-              <TableCell numeric>Slot ID</TableCell>
-              <TableCell numeric>CPE ID</TableCell>
-              <TableCell numeric>IP Address</TableCell>
-              <TableCell numeric>Status</TableCell>
+              <TableCell>Slot</TableCell>
+              <TableCell>Slot ID</TableCell>
+              <TableCell>CPE ID</TableCell>
+              <TableCell>IP Address</TableCell>
+              <TableCell>Status</TableCell>
             </TableRow>
           </TableHead>
 
-          <TableBody>
-            { this.props.rackTable.map(rackState => {
+
+          {(this.props.rackTable!==undefined)&&(this.props.rackTable.length>0)?
+            (this.props.rackTable.map((rackState,index) => {
 
               return (
-                <TableRow key={rackState.id}>
+                <TableBody key={index}>
+                <TableRow key={index}>
                   <TableCell component="th" scope="row">
                     {rackState.rack_slot}
                   </TableCell>
@@ -152,9 +132,10 @@ class RackTable extends React.Component {z
                   <TableCell>{rackState.ip_address}</TableCell>
                   <TableCell>{rackState.box_status}</TableCell>
                 </TableRow>
+                </TableBody>
               );
-            })}
-          </TableBody>
+            })):(null)}
+
         </Table>
       </Paper>
       </div>
@@ -167,7 +148,7 @@ RackTable.propTypes = {
 };
 
 const mapStateToProps=state=>({
-  rackNames:state.rackListReducer.rackNames,
+  rackNames:state.boxListReducer.rackNames,
   rackTable:state.boxListReducer.rackTable
 })
 
