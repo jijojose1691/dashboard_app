@@ -50,9 +50,9 @@ class RackTable extends React.Component {z
   }
 
 
-  handlePlatformChange=name =>async event=> {
+  handlePlatformChange=name => event=> {
        this.setState({ 'platform': event.target.value });
-      const rackNam=await this.props.getRackNames(event.target.value);
+      const rackNam= this.props.getRackNames(event.target.value);
        console.log("inide platformchange",rackNam);
     //
     //   if((this.props.rackNames!=undefined)&&(this.props.rackNames.length>0) ){
@@ -62,6 +62,9 @@ class RackTable extends React.Component {z
       console.log('rackname',rackNam)
   };
 
+  componentWillReceiveProps=(nextProps)=>{
+    console.log('nextprops',nextProps)
+  }
 
   handleChange=name => event => {
 
