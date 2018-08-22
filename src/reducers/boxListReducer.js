@@ -1,6 +1,6 @@
 import {GET_BOX_LIST} from '../actions/action'
 
-export const boxListReducer = (state={rackTable:[]}, action) => {
+export const boxListReducer = (state={}, action) => {
   switch(action.type){
 
     case GET_BOX_LIST:

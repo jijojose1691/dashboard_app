@@ -6,7 +6,7 @@ export const rackListReducer = (state={}, action) => {
     case GET_RACK_NAMES:{
       console.log('reducer',action.payload)
       // return Object.assign({}, ...state, {rackNames:action.payload})
-      return {...state,rackNames:action.payload}
+      return {...state,racknames:action.payload}
 }
     default:
       return state

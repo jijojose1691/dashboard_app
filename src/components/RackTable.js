@@ -36,40 +36,47 @@ const styles = theme => ({
 
 class RackTable extends React.Component {z
   state = {
-    platform:'Arris'
+    platform:'Arris',
+  //  rackNames:[]
   };
 
   componentWillMount(){
     this.props.getRackNames(this.state.platform)
-
-    if((this.props.rackNames!==undefined)&&(this.props.rackNames.length>0) ){
-      console.log('inside if')
-    this.props.getBoxList(this.props.rackNames[0])
-    }
-
+    // if((this.props.rackNames!==undefined)&&(this.props.rackNames.length>0) ){
+    //   console.log('inside if')
+    // this.props.getBoxList(this.props.rackNames[0])
+  //  }
+        setTimeout(this.abcfunction,300)
   }
 
 
   handlePlatformChange=name => event=> {
        this.setState({ 'platform': event.target.value });
-      const rackNam= this.props.getRackNames(event.target.value);
-       console.log("inide platformchange",rackNam);
-    //
-    //   if((this.props.rackNames!=undefined)&&(this.props.rackNames.length>0) ){
-    //     console.log('inside handlePlatformChange',this.props.rackNames[0])
-    //   this.props.getBoxList(this.props.rackNames[0])
+
+      this.props.getRackNames(event.target.value);
+
+      console.log('racknames',this.props.rackNames)
+
+        setTimeout(this.abcfunction,300)
+      // if((this.props.rackNames!=undefined)&&(this.props.rackNames.length>0) ){
+      // //  console.log('inside handlePlatformChange',this.props.rackNames[0])
+      // this.props.getBoxList(this.props.rackNames[0])
     // }
-      console.log('rackname',rackNam)
+
   };
 
-  componentWillReceiveProps=(nextProps)=>{
-    console.log('nextprops',nextProps)
+  abcfunction=()=>{
+    console.log('racknamems inside abcfn',this.props.rackNames)
+    if((this.props.rackNames!==undefined)&&(this.props.rackNames.length>0) ){
+    //  console.log('inside handlePlatformChange',this.props.rackNames[0])
+    this.props.getBoxList(this.props.rackNames[0])
   }
+}
 
   handleChange=name => event => {
 
     // this.setState({ [name]: event.target.value });
-      console.log('rackname',event.target.value)
+    //  console.log('rackname',event.target.value)
 
     // this.props.getRackNames(event.target.value);
     this.props.getBoxList(event.target.value)
@@ -89,7 +96,7 @@ class RackTable extends React.Component {z
     //     <option value={rack}>{rack}</option>
     // );
 
-     console.log('rackItems',this.props.rackNames)
+     //console.log('rackItems',this.props.rackNames)
 
     return (
       <div className={classes.root}>
@@ -143,10 +150,11 @@ class RackTable extends React.Component {z
           </TableHead>
 
           <TableBody>
-            { this.props.rackTable.map(rackState => {
+          {(this.props.rackTable!==undefined)&&(this.props.rackTable.length>0)?
+            (this.props.rackTable.map((rackState,index) => {
 
               return (
-                <TableRow key={rackState.id}>
+                <TableRow key={index}>
                   <TableCell component="th" scope="row">
                     {rackState.rack_slot}
                   </TableCell>
@@ -156,7 +164,7 @@ class RackTable extends React.Component {z
                   <TableCell>{rackState.box_status}</TableCell>
                 </TableRow>
               );
-            })}
+            })):(null)}
           </TableBody>
         </Table>
       </Paper>
@@ -170,7 +178,7 @@ RackTable.propTypes = {
 };
 
 const mapStateToProps=state=>({
-  rackNames:state.rackListReducer.rackNames,
+  rackNames:state.rackListReducer.racknames,
   rackTable:state.boxListReducer.rackTable
 })
 
