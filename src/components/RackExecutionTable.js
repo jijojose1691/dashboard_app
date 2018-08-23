@@ -35,7 +35,7 @@ const styles = theme => ({
 });
 
 
-class RackTable extends React.Component {z
+class RackExecuionTable extends React.Component {z
   state = {
     platform:'Arris',
   };
@@ -142,7 +142,7 @@ class RackTable extends React.Component {z
   }
 }
 
-RackTable.propTypes = {
+RackExecuionTable.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
@@ -151,4 +151,4 @@ const mapStateToProps=state=>({
   boxList:state.boxInfoReducer.boxList
 })
 
-export default withStyles(styles)(connect(mapStateToProps,{getRackNames, getBoxList})(RackTable));
+export default withStyles(styles)(connect(mapStateToProps,{getRackNames, getBoxList})(RackExecuionTable));

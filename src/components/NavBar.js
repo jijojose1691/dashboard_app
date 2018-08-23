@@ -6,9 +6,13 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-
+import Button from '@material-ui/core/Button';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import { Link } from 'react-router-dom'
 const styles = {
   root: {
+    display: 'flex',
     flexGrow: 1,
   },
   flex: {
@@ -20,15 +24,43 @@ const styles = {
   },
 };
 
-function NavBar(props) {
-  const { classes } = props;
-  return (
+class NavBar extends React.Component {
+  state = {
+      anchorEl: null,
+    };
+
+
+  handleClick = event => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleClose = () => {
+     this.setState({ anchorEl: null });
+   };
+
+    render() {
+    const { classes } = this.props;
+    const { anchorEl } = this.state;
+
+    return (
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+            <IconButton className={classes.menuButton} color="inherit" aria-label="Menu"  aria-owns={anchorEl ? 'simple-menu' : null}
+             aria-haspopup="true"
+             onClick={this.handleClick}>
             <MenuIcon />
           </IconButton>
+          <Menu
+          id="simple-menu"
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={this.handleClose}
+        >
+          <MenuItem>Profile</MenuItem>
+          <MenuItem onClick={this.handleClose}>My account</MenuItem>
+          <MenuItem onClick={this.handleClose}>Logout</MenuItem>
+        </Menu>
           <Typography variant="title" color="inherit" className={classes.flex}>
             OneMW Stability
           </Typography>
@@ -36,6 +68,7 @@ function NavBar(props) {
       </AppBar>
     </div>
   );
+}
 }
 
 NavBar.propTypes = {

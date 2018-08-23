@@ -1,8 +1,8 @@
 
-import {boxListReducer} from './boxListReducer'
-// import {rackListReducer} from './rackListReducer'
+import {boxInfoReducer} from './boxInfoReducer'
+import {rackExecInfoReducer} from './rackExecInfoReducer'
 
 export default{
-  boxListReducer,
-  // rackListReducer
+  boxInfoReducer,
+  rackExecInfoReducer
 }
