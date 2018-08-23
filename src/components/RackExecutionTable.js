@@ -12,15 +12,27 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { ARRIS, HUMAX } from './../constants/constants.js'
 import {getRackNames} from '../actions/action.js'
-import {getBoxList} from '../actions/action.js'
+import {getExecByRack} from '../actions/action.js'
 import {connect} from 'react-redux'
-
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+import CardMedia from '@material-ui/core/CardMedia';
+import IconButton from '@material-ui/core/IconButton';
+import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
+import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import SkipNextIcon from '@material-ui/icons/SkipNext';
 
 const styles = theme => ({
   root: {
     width: '100%',
     marginTop: theme.spacing.unit * 3,
     overflowX: 'auto',
+     flexWrap: 'wrap',
+      overflow: 'hidden',
   },
   table: {
     minWidth: '100%',
@@ -32,40 +44,75 @@ const styles = theme => ({
   selectEmpty: {
     marginTop: theme.spacing.unit * 2,
   },
+  card: {
+   minWidth: 275,
+ },
+ bullet: {
+   display: 'inline-block',
+   margin: '0 2px',
+   transform: 'scale(0.8)',
+ },
+ title: {
+   marginBottom: 16,
+   fontSize: 14,
+ },
+ pos: {
+   marginBottom: 12,
+ },
+ paper: {
+   height: 200,
+   width: 350,
+ },
+ control: {
+   padding: theme.spacing.unit * 2,
+ },
+ content: {
+  flex: '1 0 auto',
+},
+cover: {
+  height: 105,
+  width: 350,
+},
+media: {
+  height: 140,
+},
 });
 
 
-class RackExecuionTable extends React.Component {z
+class RackExecutionTable extends React.Component {z
   state = {
     platform:'Arris',
   };
 
   componentWillMount(){
     this.props.getRackNames(this.state.platform)
-    setTimeout(this.fetchBoxList,300)
+    setTimeout(this.fetchRackExec,300)
   }
 
 
   handlePlatformChange=name => event=> {
        this.setState({ 'platform': event.target.value });
       this.props.getRackNames(event.target.value);
-      setTimeout(this.fetchBoxList,300)
+      setTimeout(this.fetchRackExec,300)
   };
 
-  fetchBoxList=()=>{
+  fetchRackExec=()=>{
     if((this.props.rackNames!==undefined)&&(this.props.rackNames.length>0) ){
-      this.props.getBoxList(this.props.rackNames[0])
+      this.props.getExecByRack(this.props.rackNames[0])
   }
 }
 
   handleChange=name => event => {
-    this.props.getBoxList(event.target.value)
+    this.props.getExecByRack(event.target.value)
   };
 
 
   render() {
-    const { classes } = this.props;
+    const { classes, theme } = this.props;
+    const { spacing } ='16';
+
     return (
+              <Grid container className={classes.root} spacing={16}>
       <div className={classes.root}>
       <FormControl className={classes.formControl}>
             <InputLabel>Platform</InputLabel>
@@ -102,34 +149,108 @@ class RackExecuionTable extends React.Component {z
 
                 </Select>
               </FormControl>
+              <Grid item xs={12}>
+                <Grid container className={classes.demo} justify="center" spacing={40}>
+                    <Grid item>
+                    <Card className={classes.card}>
+   <CardMedia
+     component="img"
+     className={classes.media}
+     src= "/static/images/test.jpg"
+     title="Scheduled"
+   />
+   <CardContent>
+     <Typography gutterBottom variant="display2">
+       0
+     </Typography>
+   </CardContent>
+   </Card>
 
+                    </Grid>
+                    <Grid item>
+                    <Card className={classes.card}>
+   <CardMedia
+     component="img"
+     className={classes.media}
+     height="140"
+     image="/static/images/test.jpg"
+     title="In Progress"
+   />
+   <CardContent>
+     <Typography gutterBottom variant="display2">
+       4
+     </Typography>
+   </CardContent>
+   </Card>
+                    </Grid>
+                    <Grid item>
+                    <Card className={classes.card}>
+   <CardMedia
+     component="img"
+     className={classes.media}
+     height="140"
+     image="/static/images/test.jpg"
+     title="Passed"
+   />
+   <CardContent>
+     <Typography gutterBottom variant="display2">
+       2
+     </Typography>
+   </CardContent>
+   </Card>
+                    </Grid>
+                    <Grid item>
+                    <Card className={classes.card}>
+   <CardMedia
+     component="img"
+     className={classes.media}
+     height="140"
+     image="/static/images/test.jpg"
+     title="Failed"
+   />
+   <CardContent>
+     <Typography gutterBottom variant="display2">
+       2
+     </Typography>
+   </CardContent>
+   </Card>
+                    </Grid>
+                </Grid>
+              </Grid>
 
       <Paper className={classes.root}>
         <Table className={classes.table}>
           <TableHead>
             <TableRow>
-              <TableCell>Slot</TableCell>
               <TableCell>Slot ID</TableCell>
-              <TableCell>CPE ID</TableCell>
-              <TableCell>IP Address</TableCell>
-              <TableCell>Status</TableCell>
+              <TableCell>Test Case Number</TableCell>
+              <TableCell>Started At</TableCell>
+              <TableCell>Test Status</TableCell>
+              <TableCell>Ended At</TableCell>
+              <TableCell>Duration(Sec)</TableCell>
+              <TableCell>Remark</TableCell>
+              <TableCell>Core Dump Presence</TableCell>
             </TableRow>
           </TableHead>
 
 
-          {(this.props.boxList!==undefined)&&(this.props.boxList.length>0)?
-            (this.props.boxList.map((rackState,index) => {
+          {(this.props.rackExecuionList!==undefined)&&(this.props.rackExecuionList.length>0)?
+            (this.props.rackExecuionList.map((rackExecuionState,index) => {
 
               return (
                 <TableBody key={index}>
                 <TableRow key={index}>
                   <TableCell component="th" scope="row">
-                    {rackState.rack_slot}
+                    {rackExecuionState.rack_slot_id}
                   </TableCell>
-                  <TableCell>{rackState.rack_slot_id}</TableCell>
-                  <TableCell>{rackState.cpe_id}</TableCell>
-                  <TableCell>{rackState.ip_address}</TableCell>
-                  <TableCell>{rackState.box_status}</TableCell>
+                  <TableCell>{rackExecuionState.test_case_number}</TableCell>
+                  <TableCell>{rackExecuionState.started_at}</TableCell>
+                  <TableCell>{rackExecuionState.test_status}</TableCell>
+                  <TableCell>{rackExecuionState.ended_at}</TableCell>
+                  <TableCell>{rackExecuionState.elapsed_time}</TableCell>
+                  <TableCell>{rackExecuionState.remark}</TableCell>
+                  <TableCell>{rackExecuionState.core_dump_presence}</TableCell>
+
                 </TableRow>
                 </TableBody>
               );
@@ -138,17 +259,19 @@ class RackExecuionTable extends React.Component {z
         </Table>
       </Paper>
       </div>
+      </Grid>
     );
   }
 }
 
-RackExecuionTable.propTypes = {
+RackExecutionTable.propTypes = {
   classes: PropTypes.object.isRequired,
+  theme: PropTypes.object.isRequired,
 };
 
 const mapStateToProps=state=>({
-  rackNames:state.boxInfoReducer.rackNames,
-  boxList:state.boxInfoReducer.boxList
+  rackNames:state.rackExecInfoReducer.rackNames,
+  rackExecuionList:state.rackExecInfoReducer.rackExecuionList
 })
 
-export default withStyles(styles)(connect(mapStateToProps,{getRackNames, getBoxList})(RackExecuionTable));
+export default withStyles(styles, { withTheme: true })(connect(mapStateToProps,{getRackNames, getExecByRack})(RackExecutionTable));

@@ -57,9 +57,9 @@ class NavBar extends React.Component {
           open={Boolean(anchorEl)}
           onClose={this.handleClose}
         >
-          <MenuItem>Profile</MenuItem>
-          <MenuItem onClick={this.handleClose}>My account</MenuItem>
-          <MenuItem onClick={this.handleClose}>Logout</MenuItem>
+          <MenuItem onClick={this.handleClose}>Overview</MenuItem>
+          <MenuItem onClick={this.handleClose}>Execution Info</MenuItem>
+          <MenuItem onClick={this.handleClose}>Rack Info</MenuItem>
         </Menu>
           <Typography variant="title" color="inherit" className={classes.flex}>
             OneMW Stability

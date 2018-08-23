@@ -25,11 +25,11 @@ export const getBoxList= (rackName) => (dispatch) =>{
   })
 }
 
-export const getExecByEack= (rackName) => (dispatch) =>{
-  request.get(`${baseUrl}/boxList/${rackName}`)
+export const getExecByRack= (rackName) => (dispatch) =>{
+  request.get(`${baseUrl}/executionStatus/${rackName}`)
   .then(result=>{
     dispatch({
-      type:GET_BOX_LIST,
+      type:GET_RACK_EXECUTION,
       payload:result.body
     })
   })
