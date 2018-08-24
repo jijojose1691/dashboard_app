@@ -1,8 +1,7 @@
+import { boxInfoReducer } from "./boxInfoReducer";
+import { rackExecInfoReducer } from "./rackExecInfoReducer";
 
-import {boxInfoReducer} from './boxInfoReducer'
-import {rackExecInfoReducer} from './rackExecInfoReducer'
-
-export default{
+export default {
   boxInfoReducer,
   rackExecInfoReducer
-}
+};
