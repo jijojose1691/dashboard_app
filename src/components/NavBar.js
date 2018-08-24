@@ -8,6 +8,8 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import { Link } from 'react-router-dom'
+
 const styles = {
   root: {
     display: "flex",
@@ -60,8 +62,8 @@ class NavBar extends React.Component {
               onClose={this.handleClose}
             >
               <MenuItem onClick={this.handleClose}>Overview</MenuItem>
-              <MenuItem onClick={this.handleClose}>Execution Info</MenuItem>
-              <MenuItem onClick={this.handleClose}>Rack Info</MenuItem>
+              <MenuItem> <Link to="/rackExecutionStatus">Execution Info</Link></MenuItem>
+              <MenuItem><Link to="/rackStatus">Rack Info</Link></MenuItem>
             </Menu>
             <Typography
               variant="title"
