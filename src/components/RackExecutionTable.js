@@ -15,16 +15,10 @@ import { getRackNames } from "../actions/action.js";
 import { getExecByRack } from "../actions/action.js";
 import { connect } from "react-redux";
 import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import CardMedia from "@material-ui/core/CardMedia";
-import IconButton from "@material-ui/core/IconButton";
-import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
-import PlayArrowIcon from "@material-ui/icons/PlayArrow";
-import SkipNextIcon from "@material-ui/icons/SkipNext";
 import failed from "../static/images/failed.jpg";
 import inProgess from "../static/images/in_progress.jpg";
 import Passed from "../static/images/Passed.jpg";
@@ -83,20 +77,19 @@ const styles = theme => ({
 });
 
 class RackExecutionTable extends React.Component {
-  z;
   state = {
     platform: "Arris"
   };
 
   componentWillMount() {
     this.props.getRackNames(this.state.platform);
-    setTimeout(this.fetchRackExec, 300);
+    setTimeout(this.fetchRackExec, 500);
   }
 
   handlePlatformChange = name => event => {
     this.setState({ platform: event.target.value });
     this.props.getRackNames(event.target.value);
-    setTimeout(this.fetchRackExec, 300);
+    setTimeout(this.fetchRackExec, 500);
   };
 
   fetchRackExec = () => {
@@ -110,8 +103,7 @@ class RackExecutionTable extends React.Component {
   };
 
   render() {
-    const { classes, theme } = this.props;
-    const { spacing } = "16";
+    const { classes } = this.props;
 
     return (
       <Grid container className={classes.root} spacing={16}>
@@ -175,7 +167,13 @@ class RackExecutionTable extends React.Component {
 
                   <CardContent>
                     <Typography gutterBottom variant="display2">
-                      0
+                      {this.props.rackExecuionList !== undefined &&
+                      this.props.rackExecuionList.length > 0
+                        ? this.props.rackExecuionList.filter(
+                            rackExecuionState =>
+                              rackExecuionState.test_status === "SCHEDULED"
+                          ).length
+                        : 0}
                     </Typography>
                   </CardContent>
                 </Card>
@@ -189,7 +187,13 @@ class RackExecutionTable extends React.Component {
                   />
                   <CardContent>
                     <Typography gutterBottom variant="display2">
-                      4
+                      {this.props.rackExecuionList !== undefined &&
+                      this.props.rackExecuionList.length > 0
+                        ? this.props.rackExecuionList.filter(
+                            rackExecuionState =>
+                              rackExecuionState.test_status === "In Progress"
+                          ).length
+                        : 0}
                     </Typography>
                   </CardContent>
                 </Card>
@@ -203,7 +207,13 @@ class RackExecutionTable extends React.Component {
                   />
                   <CardContent>
                     <Typography gutterBottom variant="display2">
-                      2
+                      {this.props.rackExecuionList !== undefined &&
+                      this.props.rackExecuionList.length > 0
+                        ? this.props.rackExecuionList.filter(
+                            rackExecuionState =>
+                              rackExecuionState.test_status === "PASS"
+                          ).length
+                        : 0}
                     </Typography>
                   </CardContent>
                 </Card>
@@ -217,7 +227,13 @@ class RackExecutionTable extends React.Component {
                   />
                   <CardContent>
                     <Typography gutterBottom variant="display2">
-                      2
+                      {this.props.rackExecuionList !== undefined &&
+                      this.props.rackExecuionList.length > 0
+                        ? this.props.rackExecuionList.filter(
+                            rackExecuionState =>
+                              rackExecuionState.test_status === "FAIL"
+                          ).length
+                        : 0}
                     </Typography>
                   </CardContent>
                 </Card>

@@ -115,7 +115,7 @@ class RackTable extends React.Component {
                 <TableCell>Slot ID</TableCell>
                 <TableCell>CPE ID</TableCell>
                 <TableCell>IP Address</TableCell>
-                <TableCell>Status</TableCell>
+                <TableCell>FTI State</TableCell>
               </TableRow>
             </TableHead>
 
