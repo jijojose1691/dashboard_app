@@ -30,6 +30,10 @@ const styles = theme => ({
   },
   selectEmpty: {
     marginTop: theme.spacing.unit * 2
+  },
+  cell: {
+    "font-weight": 700,
+    color: "black"
   }
 });
 
@@ -111,11 +115,11 @@ class RackTable extends React.Component {
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
-                <TableCell>Slot</TableCell>
-                <TableCell>Slot ID</TableCell>
-                <TableCell>CPE ID</TableCell>
-                <TableCell>IP Address</TableCell>
-                <TableCell>FTI State</TableCell>
+                <TableCell className={classes.cell}>Slot</TableCell>
+                <TableCell className={classes.cell}>Slot ID</TableCell>
+                <TableCell className={classes.cell}>CPE ID</TableCell>
+                <TableCell className={classes.cell}>IP Address</TableCell>
+                <TableCell className={classes.cell}>FTI State</TableCell>
               </TableRow>
             </TableHead>
 

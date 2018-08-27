@@ -73,6 +73,10 @@ const styles = theme => ({
   },
   media: {
     height: 200
+  },
+  cell: {
+    "font-weight": 700,
+    color: "black"
   }
 });
 
@@ -245,14 +249,18 @@ class RackExecutionTable extends React.Component {
             <Table className={classes.table}>
               <TableHead>
                 <TableRow>
-                  <TableCell>Slot ID</TableCell>
-                  <TableCell>Test Case Number</TableCell>
-                  <TableCell>Started At</TableCell>
-                  <TableCell>Test Status</TableCell>
-                  <TableCell>Ended At</TableCell>
-                  <TableCell>Duration(Sec)</TableCell>
-                  <TableCell>Remark</TableCell>
-                  <TableCell>Core Dump Presence</TableCell>
+                  <TableCell className={classes.cell}>Slot ID</TableCell>
+                  <TableCell className={classes.cell}>
+                    Test Case Number
+                  </TableCell>
+                  <TableCell className={classes.cell}>Started At</TableCell>
+                  <TableCell className={classes.cell}>Test Status</TableCell>
+                  <TableCell className={classes.cell}>Ended At</TableCell>
+                  <TableCell className={classes.cell}>Duration(Sec)</TableCell>
+                  <TableCell className={classes.cell}>Remark</TableCell>
+                  <TableCell className={classes.cell}>
+                    Core Dump Presence
+                  </TableCell>
                 </TableRow>
               </TableHead>
 
