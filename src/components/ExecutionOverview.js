@@ -11,8 +11,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import { ARRIS, HUMAX } from "./../constants/constants.js";
-import { getRackNames } from "../actions/action.js";
-import { getExecOverviewByPlatform } from "../actions/action.js";
+import { getRackNames,getExecOverviewByPlatform } from "../actions/action.js";
 import { connect } from "react-redux";
 import { Link } from 'react-router-dom'
 
