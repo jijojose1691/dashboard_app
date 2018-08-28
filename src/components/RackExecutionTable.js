@@ -23,6 +23,8 @@ import failed from "../static/images/failed.jpg";
 import inProgess from "../static/images/in_progress.jpg";
 import Passed from "../static/images/Passed.jpg";
 import scheduled from "../static/images/scheduled.jpg";
+import queryString from 'query-string'
+import { Link } from 'react-router-dom'
 
 const styles = theme => ({
   root: {
@@ -86,8 +88,12 @@ class RackExecutionTable extends React.Component {
   };
 
   componentWillMount() {
+    const values = queryString.parse(this.props.location.search)
+    console.log(values.platform)
+    console.log(values.rackName)
     this.props.getRackNames(this.state.platform);
     setTimeout(this.fetchRackExec, 500);
+
   }
 
   handlePlatformChange = name => event => {
@@ -272,7 +278,8 @@ class RackExecutionTable extends React.Component {
                         <TableBody key={index}>
                           <TableRow key={index}>
                             <TableCell component="th" scope="row">
-                              {rackExecuionState.rack_slot_id}
+                            <Link to={`/rackStatus?platform=${this.state.platform}`}>
+                              {rackExecuionState.rack_slot_id}</Link>
                             </TableCell>
                             <TableCell>
                               {rackExecuionState.test_case_number}
