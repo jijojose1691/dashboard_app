@@ -61,8 +61,8 @@ class NavBar extends React.Component {
               open={Boolean(anchorEl)}
               onClose={this.handleClose}
             >
-              <MenuItem onClick={this.handleClose}>Overview</MenuItem>
-              <MenuItem onClick={this.handleClose}> <Link to="/rackExecutionStatus">Execution Info</Link></MenuItem>
+              <MenuItem onClick={this.handleClose}><Link to="/executionOverview">Overview</Link></MenuItem>
+              <MenuItem onClick={this.handleClose}><Link to="/rackExecutionStatus">Execution Info</Link></MenuItem>
               <MenuItem onClick={this.handleClose}><Link to="/rackStatus">Rack Info</Link></MenuItem>
             </Menu>
             <Typography

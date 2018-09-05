@@ -3,6 +3,8 @@ import {baseUrl} from '../constants/constants.js'
 export const GET_RACK_NAMES='GET_RACK_NAMES'
 export const GET_BOX_LIST='GET_BOX_LIST'
 export const GET_RACK_EXECUTION='GET_RACK_EXECUTION'
+export const GET_EXECUTION_BY_PLATFORM='GET_EXECUTION_BY_PLATFORM'
+export const GET_PLATFORM_OVERVIEW='GET_PLATFORM_OVERVIEW'
 
 export const getRackNames= (platform) => (dispatch) =>{
   request.get(`${baseUrl}/rackNames/${platform}`)
@@ -30,6 +32,27 @@ export const getExecByRack= (rackName) => (dispatch) =>{
   .then(result=>{
     dispatch({
       type:GET_RACK_EXECUTION,
+      payload:result.body
+    })
+  })
+}
+
+
+export const getExecOverviewByPlatform= (platform) => (dispatch) =>{
+  request.get(`${baseUrl}/executionOverview/${platform}`)
+  .then(result=>{
+    dispatch({
+      type:GET_EXECUTION_BY_PLATFORM,
+      payload:result.body
+    })
+  })
+}
+
+export const getPlatformOverview= (platform) => (dispatch) =>{
+  request.get(`${baseUrl}/platformOverview/${platform}`)
+  .then(result=>{
+    dispatch({
+      type:GET_PLATFORM_OVERVIEW,
       payload:result.body
     })
   })
