@@ -14,6 +14,15 @@ import { ARRIS, HUMAX } from "./../constants/constants.js";
 import { getRackNames,getExecOverviewByPlatform } from "../actions/action.js";
 import { connect } from "react-redux";
 import { Link } from 'react-router-dom'
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
+import CardMedia from "@material-ui/core/CardMedia";
+import failed from "../static/images/failed.jpg";
+import inProgess from "../static/images/in_progress.jpg";
+import Passed from "../static/images/Passed.jpg";
+import scheduled from "../static/images/scheduled.jpg";
 
 const styles = theme => ({
   root: {
@@ -30,6 +39,42 @@ const styles = theme => ({
   },
   selectEmpty: {
     marginTop: theme.spacing.unit * 2
+  },
+  cell: {
+    "font-weight": 700,
+    color: "black"
+  },
+  card: {
+    minWidth: 275
+  },
+  bullet: {
+    display: "inline-block",
+    margin: "0 2px",
+    transform: "scale(0.8)"
+  },
+  title: {
+    marginBottom: 16,
+    fontSize: 14
+  },
+  pos: {
+    marginBottom: 12
+  },
+  paper: {
+    height: 200,
+    width: 350
+  },
+  control: {
+    padding: theme.spacing.unit * 2
+  },
+  content: {
+    flex: "1 0 auto"
+  },
+  cover: {
+    height: 105,
+    width: 350
+  },
+  media: {
+    height: 200
   },
   cell: {
     "font-weight": 700,
@@ -78,7 +123,96 @@ class ExecutionOverview extends React.Component {
             <option value={HUMAX}>Humax</option>
           </Select>
         </FormControl>
+        <Grid item xs={12}>
+          <Grid
+            container
+            className={classes.demo}
+            justify="center"
+            spacing={40}
+          >
+            <Grid item>
+              <Card className={classes.card}>
+                <CardMedia
+                  className={classes.media}
+                  image={scheduled}
+                  title="Scheduled"
+                />
 
+                <CardContent>
+                  <Typography gutterBottom variant="display2">
+                    {this.props.rackExecuionList !== undefined &&
+                    this.props.rackExecuionList.length > 0
+                      ? this.props.rackExecuionList.filter(
+                          rackExecuionState =>
+                            rackExecuionState.test_status === "SCHEDULED"
+                        ).length
+                      : 0}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item>
+              <Card className={classes.card}>
+                <CardMedia
+                  className={classes.media}
+                  image={inProgess}
+                  title="In Progress"
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="display2">
+                    {this.props.rackExecuionList !== undefined &&
+                    this.props.rackExecuionList.length > 0
+                      ? this.props.rackExecuionList.filter(
+                          rackExecuionState =>
+                            rackExecuionState.test_status === "In Progress"
+                        ).length
+                      : 0}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item>
+              <Card className={classes.card}>
+                <CardMedia
+                  className={classes.media}
+                  image={Passed}
+                  title="Passed"
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="display2">
+                    {this.props.rackExecuionList !== undefined &&
+                    this.props.rackExecuionList.length > 0
+                      ? this.props.rackExecuionList.filter(
+                          rackExecuionState =>
+                            rackExecuionState.test_status === "PASS"
+                        ).length
+                      : 0}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid item>
+              <Card className={classes.card}>
+                <CardMedia
+                  className={classes.media}
+                  image={failed}
+                  title="Failed"
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="display2">
+                    {this.props.rackExecuionList !== undefined &&
+                    this.props.rackExecuionList.length > 0
+                      ? this.props.rackExecuionList.filter(
+                          rackExecuionState =>
+                            rackExecuionState.test_status === "FAIL"
+                        ).length
+                      : 0}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
+        </Grid>
         <Paper className={classes.root}>
           <Table className={classes.table}>
             <TableHead>
