@@ -11,7 +11,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import { ARRIS, HUMAX } from "./../constants/constants.js";
-import { getRackNames,getExecOverviewByPlatform } from "../actions/action.js";
+import { getExecOverviewByPlatform, getPlatformOverview } from "../actions/action.js";
 import { connect } from "react-redux";
 import { Link } from 'react-router-dom'
 import Card from "@material-ui/core/Card";
@@ -39,10 +39,6 @@ const styles = theme => ({
   },
   selectEmpty: {
     marginTop: theme.spacing.unit * 2
-  },
-  cell: {
-    "font-weight": 700,
-    color: "black"
   },
   card: {
     minWidth: 275
@@ -89,17 +85,23 @@ class ExecutionOverview extends React.Component {
   };
 
   componentWillMount() {
-    this.props.getRackNames(this.state.platform);
     setTimeout(this.fetchExecOverviewByPlatform, 300);
+    setTimeout(this.fetchPlatformOverview, 1000);
   }
 
   handlePlatformChange = name => event => {
     this.setState({ platform: event.target.value });
     setTimeout(this.fetchExecOverviewByPlatform, 300);
+    setTimeout(this.fetchPlatformOverview, 300);
   };
 
   fetchExecOverviewByPlatform = () => {
       this.props.getExecOverviewByPlatform(this.state.platform);
+  };
+
+  fetchPlatformOverview = () => {
+      this.props.getPlatformOverview(this.state.platform);
+      console.log(this.props.platformOverviewList)
   };
 
 
@@ -140,12 +142,13 @@ class ExecutionOverview extends React.Component {
 
                 <CardContent>
                   <Typography gutterBottom variant="display2">
-                    {this.props.rackExecuionList !== undefined &&
-                    this.props.rackExecuionList.length > 0
-                      ? this.props.rackExecuionList.filter(
-                          rackExecuionState =>
-                            rackExecuionState.test_status === "SCHEDULED"
-                        ).length
+                    {this.props.platformOverviewList !== undefined &&
+                    this.props.platformOverviewList.length > 0
+                      ? this.props.platformOverviewList.map((execuionState, index) => {
+                        return (
+                            execuionState.available_rack
+                          )
+                        })
                       : 0}
                   </Typography>
                 </CardContent>
@@ -217,6 +220,36 @@ class ExecutionOverview extends React.Component {
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
+                <TableCell className={classes.cell}>Testcase Number</TableCell>
+                <TableCell className={classes.cell}>Build Version</TableCell>
+                <TableCell className={classes.cell}>Passed on ( No. of Slots )</TableCell>
+                <TableCell className={classes.cell}>Failed on ( No. of Slots )</TableCell>
+                <TableCell className={classes.cell}>Running on ( No. of Slots )</TableCell>
+              </TableRow>
+            </TableHead>
+
+            {this.props.platformOverviewList !== undefined && this.props.platformOverviewList.length > 0
+              ? this.props.platformOverviewList.map((platformOverviewState, index) => {
+                  return (
+                    <TableBody key={index}>
+                      <TableRow key={index}>
+                        <TableCell>{platformOverviewState.available_racks}</TableCell>
+                        <TableCell>{platformOverviewState.available_racks}</TableCell>
+                        <TableCell>{platformOverviewState.available_racks}</TableCell>
+                        <TableCell>{platformOverviewState.available_racks}</TableCell>
+                        <TableCell>{platformOverviewState.available_racks}</TableCell>
+                      </TableRow>
+                    </TableBody>
+                  );
+                })
+              : null}
+          </Table>
+        </Paper>
+
+        <Paper className={classes.root}>
+          <Table className={classes.table}>
+            <TableHead>
+              <TableRow>
                 <TableCell className={classes.cell}>Rack Name</TableCell>
                 <TableCell className={classes.cell}>Testcase Number</TableCell>
                 <TableCell className={classes.cell}>Build Version</TableCell>
@@ -254,13 +287,13 @@ ExecutionOverview.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  rackNames: state.boxInfoReducer.rackNames,
-  execuionOverviewList: state.execOverviewReducer.execuionOverviewList
+  execuionOverviewList: state.execOverviewReducer.execuionOverviewList,
+  platformOverviewList: state.execOverviewReducer.platformOverviewList
 });
 
 export default withStyles(styles)(
   connect(
     mapStateToProps,
-    { getRackNames, getExecOverviewByPlatform }
+    { getExecOverviewByPlatform, getPlatformOverview }
   )(ExecutionOverview)
 );
