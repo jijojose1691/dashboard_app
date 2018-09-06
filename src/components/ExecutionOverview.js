@@ -11,18 +11,21 @@ import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import { ARRIS, HUMAX } from "./../constants/constants.js";
-import { getExecOverviewByPlatform, getPlatformOverview } from "../actions/action.js";
+import {
+  getExecOverviewByPlatform,
+  getPlatformOverview
+} from "../actions/action.js";
 import { connect } from "react-redux";
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import CardMedia from "@material-ui/core/CardMedia";
-import failed from "../static/images/failed.jpg";
 import inProgess from "../static/images/in_progress.jpg";
-import Passed from "../static/images/Passed.jpg";
-import scheduled from "../static/images/scheduled.jpg";
+import avialableRack from "../static/images/avialable_rack.jpg";
+import totalBoxes from "../static/images/total_boxes.jpg";
+import totalRacks from "../static/images/total_racks.jpg";
 
 const styles = theme => ({
   root: {
@@ -86,7 +89,7 @@ class ExecutionOverview extends React.Component {
 
   componentWillMount() {
     setTimeout(this.fetchExecOverviewByPlatform, 300);
-    setTimeout(this.fetchPlatformOverview, 1000);
+    setTimeout(this.fetchPlatformOverview, 300);
   }
 
   handlePlatformChange = name => event => {
@@ -96,14 +99,13 @@ class ExecutionOverview extends React.Component {
   };
 
   fetchExecOverviewByPlatform = () => {
-      this.props.getExecOverviewByPlatform(this.state.platform);
+    this.props.getExecOverviewByPlatform(this.state.platform);
   };
 
   fetchPlatformOverview = () => {
-      this.props.getPlatformOverview(this.state.platform);
-      console.log(this.props.platformOverviewList)
+    this.props.getPlatformOverview(this.state.platform);
+    console.log(this.props.platformOverviewList);
   };
-
 
   render() {
     const { classes } = this.props;
@@ -136,39 +138,41 @@ class ExecutionOverview extends React.Component {
               <Card className={classes.card}>
                 <CardMedia
                   className={classes.media}
-                  image={scheduled}
-                  title="Scheduled"
+                  image={avialableRack}
+                  title="Available Racks"
                 />
 
                 <CardContent>
                   <Typography gutterBottom variant="display2">
                     {this.props.platformOverviewList !== undefined &&
                     this.props.platformOverviewList.length > 0
-                      ? this.props.platformOverviewList.map((execuionState, index) => {
-                        return (
-                            execuionState.available_rack
-                          )
-                        })
+                      ? this.props.platformOverviewList.map(
+                          (platformOverviewState, index) => {
+                            return platformOverviewState.available_racks;
+                          }
+                        )
                       : 0}
                   </Typography>
                 </CardContent>
               </Card>
             </Grid>
+
             <Grid item>
               <Card className={classes.card}>
                 <CardMedia
                   className={classes.media}
                   image={inProgess}
-                  title="In Progress"
+                  title="Boxes In Progress"
                 />
                 <CardContent>
                   <Typography gutterBottom variant="display2">
-                    {this.props.rackExecuionList !== undefined &&
-                    this.props.rackExecuionList.length > 0
-                      ? this.props.rackExecuionList.filter(
-                          rackExecuionState =>
-                            rackExecuionState.test_status === "In Progress"
-                        ).length
+                    {this.props.platformOverviewList !== undefined &&
+                    this.props.platformOverviewList.length > 0
+                      ? this.props.platformOverviewList.map(
+                          (platformOverviewState, index) => {
+                            return platformOverviewState.boxes_in_progress;
+                          }
+                        )
                       : 0}
                   </Typography>
                 </CardContent>
@@ -178,17 +182,18 @@ class ExecutionOverview extends React.Component {
               <Card className={classes.card}>
                 <CardMedia
                   className={classes.media}
-                  image={Passed}
-                  title="Passed"
+                  image={totalRacks}
+                  title="Total Racks"
                 />
                 <CardContent>
                   <Typography gutterBottom variant="display2">
-                    {this.props.rackExecuionList !== undefined &&
-                    this.props.rackExecuionList.length > 0
-                      ? this.props.rackExecuionList.filter(
-                          rackExecuionState =>
-                            rackExecuionState.test_status === "PASS"
-                        ).length
+                    {this.props.platformOverviewList !== undefined &&
+                    this.props.platformOverviewList.length > 0
+                      ? this.props.platformOverviewList.map(
+                          (platformOverviewState, index) => {
+                            return platformOverviewState.total_racks;
+                          }
+                        )
                       : 0}
                   </Typography>
                 </CardContent>
@@ -198,17 +203,18 @@ class ExecutionOverview extends React.Component {
               <Card className={classes.card}>
                 <CardMedia
                   className={classes.media}
-                  image={failed}
-                  title="Failed"
+                  image={totalBoxes}
+                  title="Total Boxes"
                 />
                 <CardContent>
                   <Typography gutterBottom variant="display2">
-                    {this.props.rackExecuionList !== undefined &&
-                    this.props.rackExecuionList.length > 0
-                      ? this.props.rackExecuionList.filter(
-                          rackExecuionState =>
-                            rackExecuionState.test_status === "FAIL"
-                        ).length
+                    {this.props.platformOverviewList !== undefined &&
+                    this.props.platformOverviewList.length > 0
+                      ? this.props.platformOverviewList.map(
+                          (platformOverviewState, index) => {
+                            return platformOverviewState.total_boxes;
+                          }
+                        )
                       : 0}
                   </Typography>
                 </CardContent>
@@ -216,35 +222,6 @@ class ExecutionOverview extends React.Component {
             </Grid>
           </Grid>
         </Grid>
-        <Paper className={classes.root}>
-          <Table className={classes.table}>
-            <TableHead>
-              <TableRow>
-                <TableCell className={classes.cell}>Testcase Number</TableCell>
-                <TableCell className={classes.cell}>Build Version</TableCell>
-                <TableCell className={classes.cell}>Passed on ( No. of Slots )</TableCell>
-                <TableCell className={classes.cell}>Failed on ( No. of Slots )</TableCell>
-                <TableCell className={classes.cell}>Running on ( No. of Slots )</TableCell>
-              </TableRow>
-            </TableHead>
-
-            {this.props.platformOverviewList !== undefined && this.props.platformOverviewList.length > 0
-              ? this.props.platformOverviewList.map((platformOverviewState, index) => {
-                  return (
-                    <TableBody key={index}>
-                      <TableRow key={index}>
-                        <TableCell>{platformOverviewState.available_racks}</TableCell>
-                        <TableCell>{platformOverviewState.available_racks}</TableCell>
-                        <TableCell>{platformOverviewState.available_racks}</TableCell>
-                        <TableCell>{platformOverviewState.available_racks}</TableCell>
-                        <TableCell>{platformOverviewState.available_racks}</TableCell>
-                      </TableRow>
-                    </TableBody>
-                  );
-                })
-              : null}
-          </Table>
-        </Paper>
 
         <Paper className={classes.root}>
           <Table className={classes.table}>
@@ -253,19 +230,42 @@ class ExecutionOverview extends React.Component {
                 <TableCell className={classes.cell}>Rack Name</TableCell>
                 <TableCell className={classes.cell}>Testcase Number</TableCell>
                 <TableCell className={classes.cell}>Build Version</TableCell>
-                <TableCell className={classes.cell}>Passed on ( No. of Slots )</TableCell>
-                <TableCell className={classes.cell}>Failed on ( No. of Slots )</TableCell>
-                <TableCell className={classes.cell}>Running on ( No. of Slots )</TableCell>
+                <TableCell className={classes.cell}>
+                  Passed on ( No. of Slots )
+                </TableCell>
+                <TableCell className={classes.cell}>
+                  Failed on ( No. of Slots )
+                </TableCell>
+                <TableCell className={classes.cell}>
+                  Running on ( No. of Slots )
+                </TableCell>
               </TableRow>
             </TableHead>
 
-            {this.props.execuionOverviewList !== undefined && this.props.execuionOverviewList.length > 0
+            {this.props.execuionOverviewList !== undefined &&
+            this.props.execuionOverviewList.length > 0
               ? this.props.execuionOverviewList.map((execuionState, index) => {
                   return (
                     <TableBody key={index}>
                       <TableRow key={index}>
-                        <TableCell><Link to={`/rackStatus?platform=${this.state.platform}&rackName=${execuionState.rack_name}`}>{execuionState.rack_name}</Link></TableCell>
-                        <TableCell><Link to={`/rackExecutionStatus?platform=${this.state.platform}&rackName=${execuionState.rack_name}`}>{execuionState.test_case_number}</Link></TableCell>
+                        <TableCell>
+                          <Link
+                            to={`/rackStatus?platform=${
+                              this.state.platform
+                            }&rackName=${execuionState.rack_name}`}
+                          >
+                            {execuionState.rack_name}
+                          </Link>
+                        </TableCell>
+                        <TableCell>
+                          <Link
+                            to={`/rackExecutionStatus?platform=${
+                              this.state.platform
+                            }&rackName=${execuionState.rack_name}`}
+                          >
+                            {execuionState.test_case_number}
+                          </Link>
+                        </TableCell>
                         <TableCell>{execuionState.execution_id}</TableCell>
                         <TableCell>{execuionState.passed_tests}</TableCell>
                         <TableCell>{execuionState.failed_tests}</TableCell>
